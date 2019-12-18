@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#8BC34A"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="223dp"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#ff3a382f"
+        android:text="@string/title_text" />
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/titleText"
+        android:gravity="center_horizontal"
+        android:background="@drawable/rowbg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/foodEditText"
+            android:padding="14dp"
+            android:layout_marginTop="18dp"
+            android:hint="@string/hint_food"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/caloriesEditText"
+            android:padding="14dp"
+            android:hint="@string/hint_calories"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/submitButton"
+            android:text="ADD"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>

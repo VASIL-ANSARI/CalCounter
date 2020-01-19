@@ -6,13 +6,44 @@
     android:layout_height="match_parent"
     android:background="#8BC34A"
     tools:context=".DisplayActivity">
-
+    <LinearLayout
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp"
+        android:background="#00ACC1"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
+        <TextView
+            android:paddingRight="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/totalAmountTextView"
+            android:text="@string/food_total_text"
+            android:layout_marginLeft="4dp"
+            android:textStyle="bold"
+            android:textColor="#fff3f6ff"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="|"
+            android:textColor="#ffee1d27"
+            android:textSize="27sp"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/totalItemsTextView"
+            android:text="@string/food_items_num"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:textColor="#ff212121"
+            android:textSize="13sp"/>
+    </LinearLayout>
     <ListView
-        android:id="@+id/list"
-        android:dividerHeight="2dp"
-        android:divider="#212121"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </ListView>
+        android:id="@+id/list"
+        android:divider="#212121"
+        android:dividerHeight="2dp"
+        android:layout_below="@+id/linearLayout"/>
 </RelativeLayout>

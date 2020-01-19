@@ -3,49 +3,49 @@ package model;
 import java.io.Serializable;
 
 public class Food implements Serializable {
-    private static final long serialversionUID=10L;
-    private String Title;
-    private  int Id;
-    private String Desc;
+    private static final long serialVersionUID = 10L;
+    private String foodName;
+    private int calories;
+    private int foodId;
     private String recordDate;
 
-    public Food() {
+    public Food( String food, int cals, int id, String date){
+        foodName = food;
+        calories = cals;
+        foodId = id;
+        recordDate = date;
+
     }
 
-    public Food(String title, int Id, String desc, String recordDate) {
-        Title = title;
-        this.Id = Id;
-        Desc = desc;
-        this.recordDate = recordDate;
+    public Food(){
     }
 
-    public static long getSerialversionUID() {
-        return serialversionUID;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setTitle(String title) {
-        Title = title;
+    public String getFoodName() {
+        return foodName;
     }
 
-    public String getTitle() {
-        return Title;
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
-    public String getDesc() {
-        return Desc;
+    public int getCalories() {
+        return calories;
     }
 
-    public void setDesc(String desc) {
-        Desc = desc;
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 
-
-    public int getId() {
-        return Id;
+    public int getFoodId() {
+        return foodId;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setFoodId(int foodId) {
+        this.foodId = foodId;
     }
 
     public String getRecordDate() {

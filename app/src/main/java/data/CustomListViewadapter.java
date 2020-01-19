@@ -24,28 +24,30 @@ public class CustomListViewadapter extends ArrayAdapter<Food> {
 
     private int layoutResource;
     private Activity activity;
-    private ArrayList<Food> foodlist = new ArrayList<Food>();
-    public CustomListViewadapter(DisplayActivity act, int resource, ArrayList<Food> data) {
-        super(act, resource,data);
-        layoutResource=resource;
-        activity=act;
-        foodlist=data;
+    private ArrayList<Food> foodList = new ArrayList<>();
+
+    public CustomListViewadapter(Activity act, int resource, ArrayList<Food> data) {
+        super(act, resource, data);
+        layoutResource = resource;
+        activity = act;
+        foodList = data;
         notifyDataSetChanged();
+
+
     }
 
     @Override
     public int getCount() {
-        return foodlist.size();
+        return foodList.size();
     }
 
-    @Nullable
     @Override
     public Food getItem(int position) {
-        return foodlist.get(position);
+        return foodList.get(position);
     }
 
     @Override
-    public int getPosition(@Nullable Food item) {
+    public int getPosition(Food item) {
         return super.getPosition(item);
     }
 
@@ -54,11 +56,12 @@ public class CustomListViewadapter extends ArrayAdapter<Food> {
         return super.getItemId(position);
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
+
         View row = convertView;
         ViewHolder holder = null;
+
         if ( row == null || (row.getTag() == null)) {
 
             LayoutInflater inflater = LayoutInflater.from(activity);
@@ -67,6 +70,7 @@ public class CustomListViewadapter extends ArrayAdapter<Food> {
             holder = new ViewHolder();
 
             holder.foodName = (TextView) row.findViewById(R.id.name);
+            holder.foodDate = (TextView) row.findViewById(R.id.dateText);
             holder.foodCalories = (TextView) row.findViewById(R.id.calories);
 
             row.setTag(holder);
@@ -78,9 +82,10 @@ public class CustomListViewadapter extends ArrayAdapter<Food> {
 
 
         holder.food = getItem(position);
-        holder.foodName.setText(holder.food.getTitle());
+
+        holder.foodName.setText(holder.food.getFoodName());
         holder.foodDate.setText(holder.food.getRecordDate());
-        holder.foodCalories.setText(String.valueOf(holder.food.getDesc()));
+        holder.foodCalories.setText(String.valueOf(holder.food.getCalories()));
 
         final ViewHolder finalHolder = holder;
         row.setOnClickListener(new View.OnClickListener() {

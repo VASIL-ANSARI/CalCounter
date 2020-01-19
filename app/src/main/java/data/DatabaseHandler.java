@@ -17,100 +17,86 @@ import java.util.List;
 import model.Food;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private Context ctx;
-    public DatabaseHandler(Context context) {
-        super(context, Constants.DB_NAME, null, Constants.DB_VERSION);
-        this.ctx = context;
-    }
+    private final ArrayList<Food> foodList = new ArrayList<>();
 
+
+    public DatabaseHandler(Context context) {
+        super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_GROCERY_TABLE = "CREATE TABLE " + Constants.TABLE_NAME + "("
-                + Constants.KEY_ID + " INTEGER PRIMARY KEY," + Constants.TITLE + " TEXT,"
-                + Constants.DESCRIPTION + " TEXT,"
-                + Constants.DATE + " LONG );";
+        //create table
+        String CREATE_TABLE = "CREATE TABLE " + Constants.TABLE_NAME + "("
+                + Constants.KEY_ID + " INTEGER PRIMARY KEY, " + Constants.FOOD_NAME +
+                " TEXT, " + Constants.FOOD_CALORIES_NAME + " INT, " + Constants.DATE_NAME + " LONG);";
 
-        db.execSQL(CREATE_GROCERY_TABLE);
-
+        db.execSQL(CREATE_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME);
 
+        //create a new one
         onCreate(db);
 
     }
 
-    //Add list
-    public void addList(Food grocery) {
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.TITLE, grocery.getTitle());
-        values.put(Constants.DESCRIPTION, grocery.getDesc());
-        values.put(Constants.DATE, java.lang.System.currentTimeMillis());
+    //Get total items saved
+    public int getTotalItems() {
 
+        int totalItems = 0;
 
+        String query = "SELECT * FROM " + Constants.TABLE_NAME;
+        SQLiteDatabase dba = this.getReadableDatabase();
+        Cursor cursor = dba.rawQuery(query, null);
 
-        //Insert the row
-        db.insert(Constants.TABLE_NAME, null, values);
+        totalItems = cursor.getCount();
 
-        Log.d("Saved!!", "Saved to DB");
+        cursor.close();
+
+        return totalItems;
+
 
     }
 
+    //get total calories consumed
+    public int totalCalories() {
+        int cals = 0;
 
-    //Get a Grocery
-    public Food getGrocery(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase dba = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Constants.TABLE_NAME, new String[] {Constants.KEY_ID,
-                        Constants.TITLE, Constants.DESCRIPTION},
-                Constants.KEY_ID + "=?",
-                new String[] {String.valueOf(id)}, null, null, null, null);
+        String query = "SELECT SUM( " + Constants.FOOD_CALORIES_NAME + " ) " +
+                "FROM " + Constants.TABLE_NAME;
 
-        if (cursor != null)
-            cursor.moveToFirst();
-
-
-        Food item = new Food();
-        item.setTitle(cursor.getString(cursor.getColumnIndex(Constants.KEY_ID)));
-        item.setDesc(cursor.getString(cursor.getColumnIndex(Constants.DESCRIPTION)));
-
-
-        return item;
-    }
-
-
-    //Get all Groceries
-    public ArrayList<Food> getFoods() {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        ArrayList<Food> groceryList = new ArrayList<>();
-
-        Cursor cursor = db.query(Constants.TABLE_NAME, new String[] {
-                Constants.KEY_ID,Constants.TITLE,
-                Constants.DESCRIPTION}, null, null, null, null, null);
+        Cursor cursor = dba.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
-            do {
-                Food grocery = new Food();
-                grocery.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Constants.KEY_ID))));
-                grocery.setTitle(cursor.getString(cursor.getColumnIndex(Constants.TITLE)));
-                grocery.setDesc(cursor.getString(cursor.getColumnIndex(Constants.DESCRIPTION)));
-
-
-                // Add to the groceryList
-                groceryList.add(grocery);
-
-            }while (cursor.moveToNext());
+            cals = cursor.getInt(0);
         }
 
-        return groceryList;
+        cursor.close();
+        dba.close();
+
+
+        return cals;
+    }
+
+
+    //delete food item
+    public void deleteFood(int id) {
+
+        SQLiteDatabase dba = this.getWritableDatabase();
+        dba.delete(Constants.TABLE_NAME, Constants.KEY_ID + " = ?",
+                new String[]{String.valueOf(id)});
+
+        dba.close();
+
+
     }
 
     //add content to db - add food
@@ -119,16 +105,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase dba = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Constants.TITLE, food.getTitle());
-        values.put(Constants.DESCRIPTION, food.getDesc());
+        values.put(Constants.FOOD_NAME, food.getFoodName());
+        values.put(Constants.FOOD_CALORIES_NAME, food.getCalories());
+        values.put(Constants.DATE_NAME, System.currentTimeMillis());
 
         dba.insert(Constants.TABLE_NAME, null, values);
 
-        Log.v("Added Food item", "Yes!!");
+        Log.v("Added Food item", "Yesss!!");
 
         dba.close();
     }
 
 
+    public ArrayList<Food> getFoods(){
 
+        foodList.clear();
+
+        SQLiteDatabase dba = this.getReadableDatabase();
+
+        Cursor cursor = dba.query(Constants.TABLE_NAME,
+                new String[]{Constants.KEY_ID, Constants.FOOD_NAME, Constants.FOOD_CALORIES_NAME,
+                        Constants.DATE_NAME}, null, null, null, null, Constants.DATE_NAME + " DESC ");
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                Food food = new Food();
+                food.setFoodName(cursor.getString(cursor.getColumnIndex(Constants.FOOD_NAME)));
+                food.setCalories(cursor.getInt(cursor.getColumnIndex(Constants.FOOD_CALORIES_NAME)));
+                food.setFoodId(cursor.getInt(cursor.getColumnIndex(Constants.KEY_ID)));
+
+
+                DateFormat dateFormat = DateFormat.getDateInstance();
+                String date = dateFormat.format(new Date(cursor.getLong(cursor.getColumnIndex(Constants.DATE_NAME))).getTime());
+
+                food.setRecordDate(date);
+
+                foodList.add(food);
+
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        dba.close();
+        return foodList;
+
+    }
 }

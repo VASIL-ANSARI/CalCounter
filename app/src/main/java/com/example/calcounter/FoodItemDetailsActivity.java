@@ -21,33 +21,38 @@ import android.view.*;
 public class FoodItemDetailsActivity extends AppCompatActivity {
 
     private TextView foodName, calories, dateTaken;
+    private Button shareButton;
     private int foodId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_item_details);
+
         foodName = (TextView) findViewById(R.id.detsFoodName);
-        calories = (TextView) findViewById(R.id.detsValue);
+        calories = (TextView) findViewById(R.id.detsCaloriesValue);
         dateTaken = (TextView) findViewById(R.id.detsDateText);
-        //shareButton = (Button) findViewById(R.id.detsShareButton);
+        shareButton = (Button) findViewById(R.id.detsShareButton);
 
 
         Food food = (Food) getIntent().getSerializableExtra("userObj");
 
-        foodName.setText(food.getTitle());
-        calories.setText(String.valueOf(food.getDesc()));
+        foodName.setText(food.getFoodName());
+        calories.setText(String.valueOf(food.getCalories()));
         dateTaken.setText(food.getRecordDate());
 
-        foodId = food.getId();
+        foodId = food.getFoodId();
 
 
         calories.setTextSize(34.9f);
         calories.setTextColor(Color.RED);
 
-
-
-
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareCals();
+            }
+        });
     }
 
     public void shareCals() {
@@ -77,6 +82,47 @@ public class FoodItemDetailsActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_food_item_details, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.deleteItem) {
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(FoodItemDetailsActivity.this);
+            alert.setTitle("Delete?");
+            alert.setMessage("Are you sure you want to delete this item?");
+            alert.setNegativeButton("No", null);
+            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    DatabaseHandler dba = new DatabaseHandler(getApplicationContext());
+                    dba.deleteFood(foodId);
+
+                    Toast.makeText(getApplicationContext(), "Food Item Deleted!", Toast.LENGTH_LONG)
+                            .show();
+
+                    startActivity(new Intent(FoodItemDetailsActivity.this, DisplayActivity.class));
+
+
+                    //remove this activity from activity stack
+                    FoodItemDetailsActivity.this.finish();
+                }
+            });
+            alert.show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 

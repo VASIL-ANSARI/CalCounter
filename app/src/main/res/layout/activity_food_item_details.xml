@@ -6,49 +6,76 @@
     android:layout_height="match_parent"
     android:background="#8BC34A"
     tools:context=".FoodItemDetailsActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="155dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/apple" />
+
     <LinearLayout
         android:id="@+id/layout"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:background="@drawable/rowbg"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="63dp"
+        android:layout_marginLeft="63dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginRight="65dp"
+        android:background="@drawable/rowbg"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/detsFoodName"
-            android:textSize="19sp"
-            android:layout_marginTop="18dp"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:text="text"
+            android:textSize="19sp" />
+
         <TextView
             android:id="@+id/detsCaloriesTitle"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="Calories:"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/detsValue"
+            android:id="@+id/detsCaloriesValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="18dp"
             android:text="200"
             android:textSize="18sp"
-            android:layout_marginTop="18dp"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/detsDateText"
-            android:text="Consumed on.."
-            android:textStyle="italic"
-            android:textSize="14sp"
-            android:layout_marginTop="14dp"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:text="Consumed on.."
+            android:textSize="14sp"
+            android:textStyle="italic" />
 
+        <Button
+            android:id="@+id/detsShareButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/circle"
+            android:text="@string/share_title" />
     </LinearLayout>
 </RelativeLayout>

@@ -11,8 +11,8 @@ import android.view.*;
 import model.Food;
 import android.widget.*;
 public class MainActivity extends AppCompatActivity {
-    private EditText title, desc;
-    private Button submit;
+    private EditText foodName, foodCals;
+    private Button submitButton;
     private DatabaseHandler dba;
 
     @Override
@@ -20,14 +20,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         dba = new DatabaseHandler(MainActivity.this);
+        foodName = (EditText) findViewById(R.id.foodEditText);
+        foodCals = (EditText) findViewById(R.id.caloriesEditText);
+        submitButton = (Button) findViewById(R.id.submitButton);
 
-        title = (EditText) findViewById(R.id.foodEditText);
-        desc = (EditText) findViewById(R.id.caloriesEditText);
-        submit = (Button) findViewById(R.id.submitButton);
-
-        submit.setOnClickListener(new View.OnClickListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -38,28 +36,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveDataToDB() {
-        Food food = new Food();
-        String name = title.getText().toString().trim();
-        String description = desc.getText().toString().trim();
 
-        if (name.equals("") || description.equals("")) {
+        Food food = new Food();
+        String name = foodName.getText().toString().trim();
+        String calsString = foodCals.getText().toString().trim();
+
+        int cals = Integer.parseInt(calsString);
+
+        if (name.equals("") || calsString.equals("")) {
+
             Toast.makeText(getApplicationContext(), "No empty fields allowed", Toast.LENGTH_LONG).show();
 
         }else {
-            food.setTitle(name);
-            food.setDesc(description);
+
+            food.setFoodName(name);
+            food.setCalories(cals);
 
             dba.addFood(food);
             dba.close();
 
 
             //clear the form
-            title.setText("");
-            desc.setText("");
+            foodName.setText("");
+            foodCals.setText("");
 
             //take users to next screen (display all entered items)
             startActivity(new Intent(MainActivity.this, DisplayActivity.class));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
 

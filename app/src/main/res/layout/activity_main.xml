@@ -17,12 +17,18 @@
         android:textStyle="bold"
         android:textColor="#ff3a382f"
         android:text="@string/title_text" />
-
+    <ImageView
+        android:layout_height="150dp"
+        android:layout_width="150dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/logo"
+        android:src="@drawable/apple"
+        android:layout_below="@+id/titleText"/>
     <LinearLayout
         android:id="@+id/layout"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/titleText"
+        android:layout_below="@id/logo"
         android:gravity="center_horizontal"
         android:background="@drawable/rowbg"
         android:layout_width="wrap_content"

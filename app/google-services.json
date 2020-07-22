@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "524220459740",
+    "firebase_url": "https://calcounter-52c7f.firebaseio.com",
+    "project_id": "calcounter-52c7f",
+    "storage_bucket": "calcounter-52c7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524220459740:android:3b22b88051db5813372219",
+        "android_client_info": {
+          "package_name": "com.example.calcounter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524220459740-bt31tl1o126beovopfak1c3r7h1m1ie4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.calcounter",
+            "certificate_hash": "7ffbec9b4c4717dcfcc984c6f274b4f48ee89a10"
+          }
+        },
+        {
+          "client_id": "524220459740-b995pec137pg0g9jhel0sp7ek3s8nhhd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALsCgtNpzg85b_O9WA95WcBrpgXn570gY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524220459740-b995pec137pg0g9jhel0sp7ek3s8nhhd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

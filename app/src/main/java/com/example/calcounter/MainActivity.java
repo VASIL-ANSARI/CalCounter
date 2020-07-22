@@ -2,6 +2,7 @@ package com.example.calcounter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -10,6 +11,9 @@ import data.DatabaseHandler;
 import android.view.*;
 import model.Food;
 import android.widget.*;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private EditText foodName, foodCals;
     private Button submitButton;
@@ -21,18 +25,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dba = new DatabaseHandler(MainActivity.this);
-        foodName = (EditText) findViewById(R.id.foodEditText);
-        foodCals = (EditText) findViewById(R.id.caloriesEditText);
-        submitButton = (Button) findViewById(R.id.submitButton);
+        //ArrayList<Food> foodsFromDB = dba.getFoods();
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                saveDataToDB();
 
-            }
-        });
+
+            foodName = (EditText) findViewById(R.id.foodEditText);
+            foodCals = (EditText) findViewById(R.id.caloriesEditText);
+            submitButton = (Button) findViewById(R.id.submitButton);
+
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    saveDataToDB();
+
+                }
+            });
     }
 
     private void saveDataToDB() {
@@ -41,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
         String name = foodName.getText().toString().trim();
         String calsString = foodCals.getText().toString().trim();
 
-        int cals = Integer.parseInt(calsString);
 
         if (name.equals("") || calsString.equals("")) {
 
             Toast.makeText(getApplicationContext(), "No empty fields allowed", Toast.LENGTH_LONG).show();
 
         }else {
+            int cals = Integer.parseInt(calsString);
 
             food.setFoodName(name);
             food.setCalories(cals);
@@ -60,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
             foodName.setText("");
             foodCals.setText("");
 
-            //take users to next screen (display all entered items)
-            startActivity(new Intent(MainActivity.this, DisplayActivity.class));
+            Intent intent=new Intent();
+            setResult(RESULT_OK,intent);
+
+            finish();
         }
     }
 

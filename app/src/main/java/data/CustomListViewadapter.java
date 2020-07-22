@@ -3,9 +3,11 @@ package data;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -17,10 +19,11 @@ import com.example.calcounter.FoodItemDetailsActivity;
 import com.example.calcounter.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Food;
 
-public class CustomListViewadapter extends ArrayAdapter<Food> {
+public class CustomListViewadapter extends ArrayAdapter<Food>  {
 
     private int layoutResource;
     private Activity activity;
@@ -99,7 +102,7 @@ public class CustomListViewadapter extends ArrayAdapter<Food> {
                 i.putExtras(mBundle);
 
 
-                activity.startActivity(i);
+                activity.startActivityForResult(i,12);
 
 
             }
@@ -115,11 +118,19 @@ public class CustomListViewadapter extends ArrayAdapter<Food> {
 
     }
 
+
     public class ViewHolder {
         Food food;
         TextView foodName;
         TextView foodCalories;
         TextView foodDate;
 
+    }
+
+
+    public  void  updateList(ArrayList<Food> newList){
+        foodList=new ArrayList<>();
+        foodList=newList;
+        notifyDataSetChanged();
     }
 }

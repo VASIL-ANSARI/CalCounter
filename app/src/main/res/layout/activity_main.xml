@@ -38,6 +38,7 @@
             android:id="@+id/foodEditText"
             android:padding="14dp"
             android:layout_marginTop="18dp"
+            android:inputType="textAutoComplete"
             android:hint="@string/hint_food"
             android:layout_width="250dp"
             android:layout_height="wrap_content"/>
@@ -45,6 +46,7 @@
         <EditText
             android:id="@+id/caloriesEditText"
             android:padding="14dp"
+            android:inputType="number"
             android:hint="@string/hint_calories"
             android:layout_width="250dp"
             android:layout_height="wrap_content"/>

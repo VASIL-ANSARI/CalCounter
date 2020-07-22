@@ -4,5 +4,14 @@
         app:showAsAction="never"
         android:orderInCategory="100"
         android:id="@+id/action_settings"/>
+    <item android:title="ADD"
+        app:showAsAction="always"
+        android:id="@+id/add_item_settings"/>
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.widget.SearchView" />
 
 </menu>

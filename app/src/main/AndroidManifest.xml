@@ -4,20 +4,23 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/calories_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FoodItemDetailsActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".FoodItemDetailsActivity"
+            android:parentActivityName=".DisplayActivity"
+            ></activity>
+        <activity android:name=".DisplayActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplayActivity"/>
+        <activity android:name=".MainActivity"
+            android:parentActivityName=".DisplayActivity">
+        </activity>
     </application>
 
 </manifest>

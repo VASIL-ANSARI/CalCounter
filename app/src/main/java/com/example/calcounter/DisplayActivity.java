@@ -1,13 +1,23 @@
 package com.example.calcounter;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,15 +28,17 @@ import data.DatabaseHandler;
 import model.Food;
 
 
-public class DisplayActivity extends AppCompatActivity {
+public class DisplayActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private DatabaseHandler dba;
     private ArrayList<Food> dbFoods = new ArrayList<>();
     private CustomListViewadapter foodAdapter;
     private ListView listView;
+    private Object mActionMode=null;
 
     private Food myFood;
     private TextView totalCals, totalFoods;
+    private static int selectedItem=-1;
 
 
     @Override
@@ -34,11 +46,41 @@ public class DisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_foods);
 
-        listView = (ListView) findViewById(R.id.list);
-        totalCals = (TextView) findViewById(R.id.totalAmountTextView);
-        totalFoods = (TextView) findViewById(R.id.totalItemsTextView);
+        listView =  findViewById(R.id.list);
+        totalCals = findViewById(R.id.totalAmountTextView);
+        totalFoods =  findViewById(R.id.totalItemsTextView);
+
 
         refreshData();
+
+
+
+                /*if(mActionMode!=null){
+                    return false;
+                }
+                selectedItem=-1;
+                selectedItem=pos;
+                Food food=dbFoods.get(selectedItem);
+                mActionMode=DisplayActivity.this.startActionMode(mActionModeCallback);
+                arg1.setSelected(true);*/
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode==10){
+            if(resultCode==RESULT_OK){
+                refreshData();
+            }
+        }
+        if(requestCode==12){
+            if(resultCode==RESULT_OK){
+                refreshData();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void refreshData() {
@@ -82,12 +124,41 @@ public class DisplayActivity extends AppCompatActivity {
         foodAdapter = new CustomListViewadapter(DisplayActivity.this, R.layout.list_row, dbFoods);
         listView.setAdapter(foodAdapter);
         foodAdapter.notifyDataSetChanged();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_display_foods, menu);
+
+        final MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.onActionViewExpanded();
+
+        MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                Log.d("message","expanded");
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                foodAdapter.updateList(dbFoods);
+                searchView.setQuery("",false);
+                return true;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Log.d("message","Closed");
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(this);
+
         return true;
     }
 
@@ -102,8 +173,58 @@ public class DisplayActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id==R.id.add_item_settings){
+            startActivityForResult(new Intent(this,MainActivity.class),10);
+            return true;
+        }
+        /*if(id==R.id.action_search){
+            SearchView searchView=(SearchView)item.getActionView();
+            searchView.setOnQueryTextListener(this);
+            searchView.onActionViewExpanded();
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    foodAdapter.updateList(dbFoods);
+                    return true;
+                }
+            });
+            return true;
+
+        }*/
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        String input=s.toLowerCase();
+
+        ArrayList<Food>  newList=new ArrayList<>();
+
+        for(Food name:dbFoods){
+            if(name.getFoodName().toLowerCase().contains(input)){
+                newList.add(name);
+            }
+        }
+
+        foodAdapter.updateList(newList);
+        return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
     }
 }
 

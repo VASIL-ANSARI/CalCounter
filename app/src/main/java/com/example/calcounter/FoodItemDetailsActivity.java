@@ -113,7 +113,10 @@ public class FoodItemDetailsActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Food Item Deleted!", Toast.LENGTH_LONG)
                             .show();
 
-                    startActivity(new Intent(FoodItemDetailsActivity.this, DisplayActivity.class));
+                   // startActivity(new Intent(FoodItemDetailsActivity.this, DisplayActivity.class));
+
+                    Intent intent=new Intent(FoodItemDetailsActivity.this, DisplayActivity.class);
+                    setResult(RESULT_OK,intent);
 
 
                     //remove this activity from activity stack
